@@ -1,0 +1,32 @@
+slam_toolbox:
+  ros__parameters:
+    # Frames — match your bringup (check with `ros2 run tf2_tools view_frames`)
+    odom_frame: odom                  # or vesc/odom if custom
+    map_frame: map
+    base_frame: base_link             # or ego_racecar/base_link
+    scan_topic: /scan                 # from urg_node
+
+    # Mode (override in launch if needed)
+    mode: mapping                     # or localization
+
+    # Laser params
+    max_laser_range: 30.0             # Hokuyo typical max
+    minimum_travel_distance: 0.2      # Lower for precise tracks
+    minimum_travel_heading: 0.2       # Radians; IMU helps small rotations
+
+    # Loop closure / matcher
+    loop_search_maximum_distance: 5.0 # Smaller for indoor tracks
+    correlation_search_space_resolution: 0.01
+
+    # Solver (Ceres is default/efficient)
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_loss_function: HuberLoss    # Robust to outliers (wheel slip)
+
+    # General
+    use_scan_matching: true
+    use_scan_barycenter: true
+    map_update_interval: 1.0          # Slower saves CPU
+    minimum_time_interval: 0.5
+
+    # Odometry variance (tune if IMU noisy)
+    process_near_zero_variance: true
